@@ -20,11 +20,14 @@ public:
 	void Sort4(vector<Type> &v,int lo,int hi);//自顶向下归并排序
 	void Sort5(vector<Type> &v);//自底向上归并排序
 	void Sort6(vector<Type> &v);//堆排序(数组v[1]到v[N]位置的元素排序)
+	void Sort7(vector<Type> &v,int left,int right);//快速排序递归
+	void Sort7(vector<Type> &v);//快速排序
 	void sink(vector<Type> &v,int i,int N);
 	bool less(Type a,Type b) const;
 	void exch(vector<Type> &v,int i,int j);//交换i和j位置的元素
 	void show(vector<Type> &v) const;
 	void merge(vector<Type> &v,int lo,int mid,int hi);//将两个有序数组v[lo..mid]和v[mid+1..hi]归并成一个有序数组
+	int partition(vector<Type>& v,int left,int right);//快速排序的切分
 	int min(int a,int b);
 };
 
@@ -131,6 +134,21 @@ void sort<Type>::Sort6(vector<Type> &v)
 		sink(v,1,N);
 	}
 }
+template <class Type>
+void sort<Type>::Sort7(vector<Type>& v,int left,int right)
+{
+	if(right<=left)
+		return;
+	int mid=partition(v,left,right);
+	Sort7(v,left,mid-1);
+	Sort7(v,mid+1,right);
+}
+
+template <class Type>
+void sort<Type>::Sort7(vector<Type>& v)
+{
+	Sort7(v,0,v.size()-1);
+}
 
 template <class Type>
 void sort<Type>::sink(vector<Type> &v,int i,int N)
@@ -186,7 +204,27 @@ void sort<Type>::merge(vector<Type> &v,int lo,int mid,int hi)
 		else v[k]=aux[i++];
 	}
 }
-
+template <class Type>
+int sort<Type>::partition(vector<Type>& v,int left,int right)
+{
+	int i=left;
+	int j=right+1;
+	Type item=v[i];
+	while(i<=j)
+	{
+		while(less(v[++i],item))
+			if(i==right)
+				break;
+		while(less(item,v[--j]))
+			if(j==left)
+				break;
+		if(i>=j)
+			break;
+		exch(v,i,j);
+	}
+	exch(v,j,left);
+	return j;
+}
 template <class Type>
 int sort<Type>::min(int a,int b)
 {

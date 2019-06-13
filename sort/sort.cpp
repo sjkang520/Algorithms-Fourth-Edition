@@ -40,7 +40,7 @@ int main(int argc,char *argv[])
 	in.open(argv[1]);
 	if(in.is_open())
 	{
-		a.push_back(-1);//对于堆排序，v[0]位置的元素不参与排序
+	//	a.push_back(-1);//对于堆排序，v[0]位置的元素不参与排序
 		while(in>>c)
 			a.push_back(c);
 	}
@@ -64,7 +64,7 @@ int main(int argc,char *argv[])
 	totaltime3=(double)(stop-start)/CLOCKS_PER_SEC;*/
 
 	start=clock();
-	sorts.Sort5(a);
+	sorts.Sort7(a);
 	stop=clock();
 	totaltime4=(double)(stop-start)/CLOCKS_PER_SEC;
 
