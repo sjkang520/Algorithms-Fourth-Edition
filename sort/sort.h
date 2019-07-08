@@ -24,7 +24,9 @@ public:
 	void Sort7(vector<Type> &v);//快速排序
 	void sink(vector<Type> &v,int i,int N);
 	bool less(Type a,Type b) const;
+	bool less(vector<Type> &v,int i,int j);//堆排序用
 	void exch(vector<Type> &v,int i,int j);//交换i和j位置的元素
+	void exch2(vector<Type> &v,int i,int j);//对排序
 	void show(vector<Type> &v) const;
 	void merge(vector<Type> &v,int lo,int mid,int hi);//将两个有序数组v[lo..mid]和v[mid+1..hi]归并成一个有序数组
 	int partition(vector<Type>& v,int left,int right);//快速排序的切分
@@ -125,7 +127,7 @@ void sort<Type>::Sort5(vector<Type> &v)
 template <class Type>
 void sort<Type>::Sort6(vector<Type> &v)
 {
-	int N=v.size()-1;
+	int N=v.size();
 	for(int k=N/2;k>=1;k--)
 		sink(v,k,N);
 	while(N>1)
@@ -156,11 +158,11 @@ void sort<Type>::sink(vector<Type> &v,int i,int N)
 	while(2*i<=N)
 	{
 		int j=2*i;
-		if(j<N&&less(v[j],v[j+1]))
+		if(j<N&&less(v,j,j+1))
 			j++;
-		if(!less(v[i],v[j]))
+		if(!less(v,i,j))
 			break;
-		exch(v,i,j);
+		exch2(v,i,j);
 		i=j;
 	}
 }
@@ -172,12 +174,27 @@ bool sort<Type>::less(Type a,Type b) const
 }
 
 template <class Type>
+bool sort<Type>::less(vector<Type> &v,int i,int j)
+{
+	return v[i-1]<v[j-1];
+}
+
+template <class Type>
 void sort<Type>::exch(vector<Type> &v,int i,int j)
 {
 	Type temp;
 	temp=v[j];
 	v[j]=v[i];
 	v[i]=temp;
+}
+
+template <class Type>
+void sort<Type>::exch2(vector<Type> &v,int i,int j)
+{
+	Type temp;
+	temp=v[j-1];
+	v[j-1]=v[i-1];
+	v[i-1]=temp;
 }
 
 template <class Type>
